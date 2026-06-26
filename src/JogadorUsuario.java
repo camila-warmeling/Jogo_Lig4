@@ -5,7 +5,7 @@ public class JogadorUsuario {
         this.cor = corNaoEscolhida;
     }
     
-    public char getCor(){
+    public char obterCor(){
         return this.cor;
     }
 }

@@ -1,9 +1,10 @@
 public class Tabuleiro {
-
-    public char[][] tabuleiro = new char[6][7]; //[linha][coluna]
-    public char corUsuario, corComputador;
-
+    private char[][] tabuleiro = new char[6][7]; //[linha][coluna]
+    private int numColuna = -1;
     
+    public Tabuleiro(){
+        criarTabuleiro();
+    }
 
     private void criarTabuleiro(){
         for(int linha=0; linha<6; linha++){
@@ -13,10 +14,15 @@ public class Tabuleiro {
         }
     }
 
-    private void mostrarTabuleiro(){
-        for(int linha=0; linha<6; linha++){
+    public void mostrarTabuleiro(){
+        for(int linha=-1; linha<6; linha++){
             for(int coluna=0; coluna<7; coluna++){
-                System.out.printf(tabuleiro[linha][coluna] + " ");
+                if(linha != -1){
+                    System.out.printf(tabuleiro[linha][coluna] + " ");    
+                }else{
+                    numColuna += 1;
+                    System.out.printf(numColuna + " ");
+                }
             }
             System.out.println();
         }

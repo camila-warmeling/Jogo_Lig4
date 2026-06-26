@@ -1,21 +1,119 @@
 import java.util.Scanner;
 
-public class execucaoJogo {
-    public Scanner teclado = new Scanner(System.in);
-    char corUsuario, corComputador;
+public class ExecucaoJogo {
+    private Scanner teclado = new Scanner(System.in);
+    private char corUsuario, corComputador;
 
-    private execucaoJogo(){
-        
+    private Tabuleiro meuTabuleiro;
+    private JogadorUsuario usuario;
+    private JogadorComputador computador;
+
+    private ExecucaoJogo(){
+        meuTabuleiro = new Tabuleiro();
+        System.out.println("Seja bem-vindo ao jogo Liga-4");
+        System.out.println("Para começar, escolha uma opção do menu");  
+        mostrarMenu();
     }
 
     private void mostrarMenu(){
         System.out.println("Menu:");
         System.out.println("1 - Como Jogar");
-        System.out.println("2 - Mostrar Tabuleiro");
-        System.out.println("3 - Novo Jogo");
-        System.out.println("4 - Continuar Jogo");
-        System.out.println("5 - Sair");
+        System.out.println("2 - Regras do Jogo Liga-4");
+        System.out.println("3 - Mostrar Tabuleiro");
+        System.out.println("4 - Novo Jogo");
+        System.out.println("5 - Continuar Jogo");
+        System.out.println("6 - Sair");
 
+        System.out.println("Digite a opção:");
+        int opcaoMenu = teclado.nextInt();
+
+        switch(opcaoMenu){
+            case 1:
+                comoJogar();
+                mostrarMenu();            
+                break;
+        
+            case 2:
+                regrasDoJogo();
+                mostrarMenu();
+                break;
+
+            case 3:
+                System.out.println("Ainda não foi iniciado um jogo.");
+                System.out.println("Este é o tabuleiro vazio");
+                meuTabuleiro.mostrarTabuleiro();
+                mostrarMenu();
+                break;
+
+            case 4:
+                escolherCorPecaUsuarioComputador();
+                sortearJogadorQueComeca();
+
+                usuario = new JogadorUsuario(corUsuario);
+                computador = new JogadorComputador(corComputador);
+
+                iniciarPartida();
+                break;
+
+            case 5:
+                if(meuTabuleiro == null){
+                    System.out.println("Ainda não foi iniciado um jogo.");
+                }else{
+                    iniciarPartida();
+                }
+                mostrarMenu();              
+                break;
+
+            case 6:
+                System.out.println("Você decidiu sair do jogo. Até a próxima!");      
+                break;
+
+            default:
+                System.out.println("Essa opção não existe.");
+                mostrarMenu();
+                break;
+        }
+    }
+
+    private void comoJogar(){
+        System.out.println("\n========================================================");
+        System.out.println("                      COMO JOGAR                        ");
+        System.out.println("========================================================");
+        System.out.println("1. ESCOLHA DE CORES: No início de um 'Novo Jogo', você");
+        System.out.println("   deve escolher sua cor: (V)ermelho ou (A)zul.");
+        System.out.println("   O computador ficará automaticamente com a outra cor.");
+        System.out.println("\n2. SORTEIO INICIAL: O sistema fará um sorteio aleatório");
+        System.out.println("   para definir se você ou o computador começa a partida.");
+        System.out.println("\n3. SEU TURNO: Quando for a sua vez, o sistema pedirá para");
+        System.out.println("   você digitar o número de uma coluna.");
+        System.out.println("\n4. JOGADA DO COMPUTADOR: Logo após a sua jogada, o robô");
+        System.out.println("   irá sortear uma coluna livre para jogar a peça dele.");
+        System.out.println("\n5. FLUXO DO JOGO: O jogo segue esse 'pingue-pongue' de");
+        System.out.println("   turnos até que haja um vencedor ou o tabuleiro lote.");
+        System.out.println("========================================================\n");
+    }
+
+    private void regrasDoJogo(){
+        System.out.println("\n========================================================");
+        System.out.println("                    REGRAS DO JOGO                      ");
+        System.out.println("========================================================");
+        System.out.println("• O TABULEIRO: É composto por 6 linhas e 7 colunas.");
+        System.out.println("  As colunas são numeradas de 0 a 6.");
+        System.out.println("\n• A GRAVIDADE: Você escolhe a COLUNA. A peça cai sempre");
+        System.out.println("  na posição mais baixa que estiver livre naquela coluna.");
+        System.out.println("  Não é possível escolher a linha.");
+        System.out.println("\n• COLUNA CHEIA: Uma coluna suporta no máximo 6 peças.");
+        System.out.println("  Se tentar jogar em uma coluna cheia, o sistema dará");
+        System.out.println("  erro e pedirá para você escolher outra.");
+        System.out.println("\n• COMO GANHAR: O objetivo é ser o primeiro a alinhar");
+        System.out.println("  4 peças da sua cor seguidas. O alinhamento pode ser:");
+        System.out.println("  -> Na Horizontal (na mesma linha)");
+        System.out.println("  -> Na Vertical (na mesma coluna)");
+        System.out.println("  -> Nas Diagonais (inclinadas)");
+        System.out.println("\n• EMPATE (VELHA): Se todas as 42 casas do tabuleiro");
+        System.out.println("  forem preenchidas e ninguém tiver alinhado 4 peças,");
+        System.out.println("  o jogo termina empatado por falta de espaço.");
+        System.out.println("========================================================\n");
     }
 
     private void escolherCorPecaUsuarioComputador() {
@@ -25,9 +123,9 @@ public class execucaoJogo {
 
         System.out.println("Qual cor deseja?");
         corUsuario = teclado.next().toUpperCase().charAt(0);
-        if (corUsuario == 'V') {
+        if(corUsuario == 'V'){
             corComputador = 'A';
-        } else {
+        }else{
             corComputador = 'V';
         }
     }
@@ -35,20 +133,23 @@ public class execucaoJogo {
     private void sortearJogadorQueComeca(){
         int num;
         System.out.println("O jogador que começa jogando é:");
-        num = (int)(Math.random());
+        num = (int)(Math.random()*2); //se for igual ou maior que 0,50 vai ser 1.
         if(num == 0){
             System.out.println("Usuário");
 
-        }else(num == 1){
+        }else{
             System.out.println("Computador");
         }
     }
 
-    public static void main(String[] args){
+    private void iniciarPartida(){
+        
+    }
 
-        System.out.println("Seja bem-vindo ao jogo Liga-4");
-        System.out.println("Para começar, escolha uma opção do menu");
-        mostrarMenu();
+    public static void main(String[] args){
+        ExecucaoJogo execucao = new ExecucaoJogo();
+    
+    
     }
 
 }
