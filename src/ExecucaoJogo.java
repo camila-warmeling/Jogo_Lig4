@@ -3,6 +3,8 @@ import java.util.Scanner;
 public class ExecucaoJogo {
     private Scanner teclado = new Scanner(System.in);
     private char corUsuario, corComputador;
+    private boolean vezDoUsuario = true;
+    private int colunaEscolhida;
 
     private Tabuleiro meuTabuleiro;
     private JogadorUsuario usuario;
@@ -136,14 +138,33 @@ public class ExecucaoJogo {
         num = (int)(Math.random()*2); //se for igual ou maior que 0,50 vai ser 1.
         if(num == 0){
             System.out.println("Usuário");
-
         }else{
             System.out.println("Computador");
+            vezDoUsuario = false;
         }
     }
 
     private void iniciarPartida(){
-        
+        do{//variável vezDoUsuario faz a alternância entre o usuário e o computador
+            if(vezDoUsuario){
+                meuTabuleiro.mostrarTabuleiro();
+                System.out.println("Sua vez! Escolha qual coluna deseja posicionara a sua peça.");
+                colunaEscolhida = teclado.nextInt();
+                meuTabuleiro.
+
+
+
+
+
+                vezDoUsuario = false;
+            }else{// n precisa verificar se coluna existe
+                colunaEscolhida = computador.sortearColuna();
+
+
+
+                vezDoUsuario = true;
+           } 
+        }while();
     }
 
     public static void main(String[] args){
