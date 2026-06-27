@@ -5,6 +5,7 @@ public class ExecucaoJogo {
     private char corUsuario, corComputador;
     private boolean vezDoUsuario = true;
     private int colunaEscolhida;
+    private String vencedor;
 
     private Tabuleiro meuTabuleiro;
     private JogadorUsuario usuario;
@@ -48,7 +49,7 @@ public class ExecucaoJogo {
                 break;
 
             case 4:
-                escolherCorPecaUsuarioComputador();
+                escolherCoresDasPecas();
                 sortearJogadorQueComeca();
                 iniciarPartida();
                 break;
@@ -114,7 +115,7 @@ public class ExecucaoJogo {
         System.out.println("========================================================\n");
     }
 
-    public void escolherCorPecaUsuarioComputador() {
+    public void escolherCoresDasPecas() {
         System.out.println("Cores disponíveis para jogar:");
         System.out.println("V - Vermelho");
         System.out.println("A - Azul");
@@ -127,7 +128,7 @@ public class ExecucaoJogo {
             corComputador = 'V';
         }else{
             System.out.println("Cor inserida de forma incorreta");
-            escolherCorPecaUsuarioComputador();
+            escolherCoresDasPecas();
         }
 
         usuario = new JogadorUsuario(corUsuario);
@@ -158,30 +159,80 @@ public class ExecucaoJogo {
                     break;//impede que o programa continue a partir dessa linha após ser selecionado alguma opcao do menu
                 }
 
+                //FAZER UMA FUNÇÃO. verificacoesJogada
                 boolean colunaExiste = meuTabuleiro.verificarColunaExiste(colunaEscolhida);
-                boolean colunaDisponivel = meuTabuleiro.verificarEspacoDisponivelNaColuna(colunaEscolhida);
 
-                if(colunaExiste && colunaDisponivel){
-                    meuTabuleiro.posicionarPecaNoTabuleiro(usuario.obterCor());
-                    System.out.println("Sua peça foi adicionada com sucesso!");
+                if(colunaExiste){
+                    boolean colunaDisponivel = meuTabuleiro.verificarEspacoDisponivelNaColuna(colunaEscolhida);
+                    if(colunaDisponivel){
+                        meuTabuleiro.posicionarPecaNoTabuleiro(usuario.obterCor());
+                    }else{
+                        System.out.println("Coluna sem espaços vazio. Tente escolher outra!");
+                    }
+                }else{
+                    System.out.println("Coluna incorreta. Tente novamente!");
+                    continue;
                 }
-                vezDoUsuario = false;
-            }else{// n precisa verificar se coluna existe
+                //verifica se o jogo acabou ou não. FAZER UMA FUNÇÃO
+                if(meuTabuleiro.verificacaoVitoria() != null){
+                    vencedor = meuTabuleiro.verificacaoVitoria();
+                    fimDeJogoVitoria();
+                    break;
+                }else if(meuTabuleiro.verificacaoEmpate()){
+                    fimDeJogoEmpate();
+                    break;
+                }
+                vezDoUsuario = false;    
+                
+
+            }else{
                 System.out.println("------ JOGADA COMPUTADOR -------");
                 colunaEscolhida = computador.sortearColuna();
+                //FUNÇÃO
                 boolean colunaDisponivel = meuTabuleiro.verificarEspacoDisponivelNaColuna(colunaEscolhida);
                 
                 if(colunaDisponivel){
                     meuTabuleiro.posicionarPecaNoTabuleiro(computador.obterCor());
                     System.out.println("Peça do computador foi adicionada com sucesso!");                    
                 }
+                //chamar função de verificar se o jogo acabou ou não.
+
                 vezDoUsuario = true;
            } 
         }while(true);
     }
 
+    private void fimDeJogoVitoria(){
+        System.out.println("o jogador");
+        finalizarJogo();
+    }
+
+    private void fimDeJogoEmpate(){
+        System.out.println("------ EMPATE! ------");
+        System.out.println("Não tem mais espaços livres.");
+        System.out.println("Tabuleiro final:");
+        meuTabuleiro.mostrarTabuleiro();
+        finalizarJogo();
+    }
+
+    private void finalizarJogo(){
+        System.out.println("Deseja jogar novamente?(1 - Sim, 2 - Não");
+        int jogarNovamente = teclado.nextInt();
+        if(jogarNovamente == 1){
+            reiniciarJogo();
+        }else{
+            System.out.println("Muito obrigado por jogar!");
+        }
+    }
+
+    private void reiniciarJogo(){
+        new ExecucaoJogo();
+    }
+
+
+
     public static void main(String[] args){
-        ExecucaoJogo execucao = new ExecucaoJogo();
+        new ExecucaoJogo();
     
     }
 
