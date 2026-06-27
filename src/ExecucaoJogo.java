@@ -10,7 +10,7 @@ public class ExecucaoJogo {
     private JogadorUsuario usuario;
     private JogadorComputador computador;
 
-    private ExecucaoJogo(){
+    public ExecucaoJogo(){
         meuTabuleiro = new Tabuleiro();
         System.out.println("Seja bem-vindo ao jogo Liga-4");
         System.out.println("Para começar, escolha uma opção do menu");  
@@ -50,10 +50,6 @@ public class ExecucaoJogo {
             case 4:
                 escolherCorPecaUsuarioComputador();
                 sortearJogadorQueComeca();
-
-                usuario = new JogadorUsuario(corUsuario);
-                computador = new JogadorComputador(corComputador);
-
                 iniciarPartida();
                 break;
 
@@ -118,7 +114,7 @@ public class ExecucaoJogo {
         System.out.println("========================================================\n");
     }
 
-    private void escolherCorPecaUsuarioComputador() {
+    public void escolherCorPecaUsuarioComputador() {
         System.out.println("Cores disponíveis para jogar:");
         System.out.println("V - Vermelho");
         System.out.println("A - Azul");
@@ -127,9 +123,15 @@ public class ExecucaoJogo {
         corUsuario = teclado.next().toUpperCase().charAt(0);
         if(corUsuario == 'V'){
             corComputador = 'A';
-        }else{
+        }else if(corUsuario == 'A'){
             corComputador = 'V';
+        }else{
+            System.out.println("Cor inserida de forma incorreta");
+            escolherCorPecaUsuarioComputador();
         }
+
+        usuario = new JogadorUsuario(corUsuario);
+        computador = new JogadorComputador(corComputador);
     }
 
     private void sortearJogadorQueComeca(){
