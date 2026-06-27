@@ -1,6 +1,7 @@
 public class Tabuleiro {
     private char[][] tabuleiro = new char[6][7]; //[linha][coluna]
-    private int linhaVazia, colunaVazia;
+    private int linhaVazia, colunaVazia, quantPecasPosicionadas = 0;
+    private boolean fimDeJogo;
     
     public Tabuleiro(){
         criarTabuleiro();
@@ -21,7 +22,7 @@ public class Tabuleiro {
                 if(linha != -1){
                     System.out.printf(tabuleiro[linha][coluna] + " ");    
                 }else{
-                    numColuna += 1;
+                    numColuna ++;
                     System.out.printf(numColuna + " ");
                 }
             }
@@ -49,8 +50,19 @@ public class Tabuleiro {
     }
 
     public void posicionarPecaNoTabuleiro(char corPosicionar){
+        quantPecasPosicionadas ++;
         tabuleiro[linhaVazia][colunaVazia] = corPosicionar;
     }
 
+    public String verificacaoVitoria(){
+        String vencedor = null;
+        
 
+        return vencedor;
+    }
+
+    public boolean verificacaoEmpate(){
+        boolean empate = (quantPecasPosicionadas == 42); 
+        return empate;
+    }
 }
