@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class ExecucaoJogo {
     private Scanner teclado = new Scanner(System.in);
     private char corUsuario, corComputador;
-    private boolean vezDoUsuario = true;
+    private boolean vezDoUsuario = true, partidaIniciada = false;
     private int colunaEscolhida;
     private String vencedor;
 
@@ -55,10 +55,10 @@ public class ExecucaoJogo {
                 break;
 
             case 5:
-                if(meuTabuleiro == null){
-                    System.out.println("Ainda não foi iniciado um jogo.");
-                }else{
+                if(partidaIniciada){
                     iniciarPartida();
+                }else{
+                    System.out.println("Ainda não foi iniciado um jogo.");
                 }
                 mostrarMenu();              
                 break;
@@ -116,6 +116,7 @@ public class ExecucaoJogo {
     }
 
     public void escolherCoresDasPecas() {
+        System.out.println();//espaço para ficar mais limpo o terminal
         System.out.println("Cores disponíveis para jogar:");
         System.out.println("V - Vermelho");
         System.out.println("A - Azul");
@@ -136,6 +137,7 @@ public class ExecucaoJogo {
     }
 
     private void sortearJogadorQueComeca(){
+        System.out.println();//espaço para ficar mais limpo o terminal
         int num;
         System.out.println("O jogador que começa jogando é:");
         num = (int)(Math.random()*2); //se for igual ou maior que 0,50 vai ser 1.
@@ -145,9 +147,11 @@ public class ExecucaoJogo {
             System.out.println("Computador");
             vezDoUsuario = false;
         }
+        System.out.println();//espaço para ficar mais limpo o terminal
     }
 
     private void iniciarPartida(){
+        partidaIniciada = true;
         do{//variável vezDoUsuario faz a alternância entre o usuário e o computador
             if(vezDoUsuario){
                 meuTabuleiro.mostrarTabuleiro();
@@ -156,12 +160,10 @@ public class ExecucaoJogo {
                 colunaEscolhida = teclado.nextInt();
                 if(colunaEscolhida == -1){
                     mostrarMenu();
-                    break;//impede que o programa continue a partir dessa linha após ser selecionado alguma opcao do menu
+                    break;
                 }
 
-                //FAZER UMA FUNÇÃO. verificacoesJogada
                 boolean colunaExiste = meuTabuleiro.verificarColunaExiste(colunaEscolhida);
-
                 if(colunaExiste){
                     boolean colunaDisponivel = meuTabuleiro.verificarEspacoDisponivelNaColuna(colunaEscolhida);
                     if(colunaDisponivel){
@@ -173,37 +175,56 @@ public class ExecucaoJogo {
                     System.out.println("Coluna incorreta. Tente novamente!");
                     continue;
                 }
-                //verifica se o jogo acabou ou não. FAZER UMA FUNÇÃO
-                if(meuTabuleiro.verificacaoVitoria() != null){
-                    vencedor = meuTabuleiro.verificacaoVitoria();
-                    fimDeJogoVitoria();
+                if(verificarSeAcabouJogo()){
                     break;
-                }else if(meuTabuleiro.verificacaoEmpate()){
-                    fimDeJogoEmpate();
-                    break;
-                }
-                vezDoUsuario = false;    
-                
+                }else{
+                    vezDoUsuario = false; 
+                }   
 
             }else{
                 System.out.println("------ JOGADA COMPUTADOR -------");
                 colunaEscolhida = computador.sortearColuna();
-                //FUNÇÃO
+
                 boolean colunaDisponivel = meuTabuleiro.verificarEspacoDisponivelNaColuna(colunaEscolhida);
-                
                 if(colunaDisponivel){
                     meuTabuleiro.posicionarPecaNoTabuleiro(computador.obterCor());
                     System.out.println("Peça do computador foi adicionada com sucesso!");                    
+                }else{
+                    System.out.println("Coluna sorteada está sem espeaços vazios!");
+                    continue;
                 }
-                //chamar função de verificar se o jogo acabou ou não.
-
-                vezDoUsuario = true;
+                if(verificarSeAcabouJogo()){
+                    break;
+                }else{
+                    vezDoUsuario = true; 
+                }
            } 
         }while(true);
     }
 
+    private boolean verificarSeAcabouJogo(){
+        boolean jogoAcabou = true;
+        vencedor = meuTabuleiro.verificacaoVitoria(colunaEscolhida, vezDoUsuario);
+        if(!vencedor.equals("null")){ //! no começo da sentença para negação
+            fimDeJogoVitoria();
+        }else if(meuTabuleiro.verificacaoEmpate()){
+            fimDeJogoEmpate();
+        }else{
+            jogoAcabou = false;
+        }
+        return jogoAcabou;
+    }
+
     private void fimDeJogoVitoria(){
-        System.out.println("o jogador");
+
+        System.out.println();
+        if(vencedor.equals("Usuário")){
+            System.out.println("------ VOCÊ VENCEU! PARABÉNS! ------");
+        }else{
+            System.out.println("------ VOCÊ PERDEU! MAIS SORTE DA PRÓXIMA VEZ ------");
+        }
+        System.out.println("Tabuleiro final:");
+        meuTabuleiro.mostrarTabuleiro();
         finalizarJogo();
     }
 
@@ -216,24 +237,32 @@ public class ExecucaoJogo {
     }
 
     private void finalizarJogo(){
-        System.out.println("Deseja jogar novamente?(1 - Sim, 2 - Não");
-        int jogarNovamente = teclado.nextInt();
-        if(jogarNovamente == 1){
-            reiniciarJogo();
-        }else{
-            System.out.println("Muito obrigado por jogar!");
-        }
+        int jogarNovamente;
+        do{
+            System.out.println("Deseja jogar novamente?(1 - Sim, 2 - Não)");
+            jogarNovamente = teclado.nextInt();
+            switch(jogarNovamente){
+            case 1:
+                reiniciarJogo();
+                break;
+        
+            case 2: 
+                System.out.println("Muito obrigado por jogar!");
+                break;
+
+            default:
+                System.out.println("Opção incorreta, tente novamente");
+                break;
+            }
+        }while(jogarNovamente != 1 && jogarNovamente != 2);
     }
 
     private void reiniciarJogo(){
         new ExecucaoJogo();
     }
 
-
-
     public static void main(String[] args){
         new ExecucaoJogo();
     
     }
-
 }

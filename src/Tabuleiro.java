@@ -54,12 +54,81 @@ public class Tabuleiro {
         tabuleiro[linhaVazia][colunaVazia] = corPosicionar;
     }
 
-    public String verificacaoVitoria(){
-        String vencedor = null;
-        
+    public String verificacaoVitoria(int coluna, boolean jogadorUsuario){
+        String vencedor = "null";
+        boolean vertical = false, vitoria = false;
+        char corJogador = tabuleiro[linhaVazia][coluna];
+        int contadorPontos = 0;
 
+        if(linhaVazia <= 2){
+            vertical = verificarVitoriaVertical(coluna, corJogador, contadorPontos);
+        }
+
+        if(vertical){
+            vitoria = true;
+        //}else if(verificarVitoriaHorizontal(coluna, corJogador, contadorPontos)){
+            vitoria = true;
+        //}else if(verificarVitoriaDiagonalDireta(coluna, corJogador, contadorPontos)){
+            vitoria = true;
+        //}else{
+            vitoria = true;
+        }
+
+        if(vitoria){
+            if(jogadorUsuario){
+                vencedor = "Usuário";
+            }else{
+                vencedor = "Computador";
+            }
+        }
         return vencedor;
     }
+
+    private boolean verificarVitoriaVertical(int coluna, char cor, int contadorPontos){
+        for(int linha = linhaVazia; linha <= linhaVazia+3; linha ++){
+            if(tabuleiro[linha][coluna] == cor){
+                contadorPontos ++;
+            }else{//peça de baixo pertence ao adversário
+                contadorPontos = 0;
+                break;
+            }
+        }
+        if(contadorPontos == 4){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean verificarVitoriaHorizontal(int coluna, char cor, int contadorPontos){
+        int posicoes = 0; //quantidade de posições que devem ser subtraídas.
+        if(coluna >= 3){
+            posicoes = 3;
+        }else{
+            posicoes = coluna;
+        }
+
+        for(coluna=coluna-posicoes; coluna<coluna+4 ; coluna ++){
+            if(tabuleiro[linhaVazia][coluna] == cor){
+                contadorPontos ++;
+            }else{
+                contadorPontos = 0;
+            }
+
+            if(contadorPontos == 4){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //private boolean verificarVitoriaDiagonalDireta(int coluna, char cor, int contadorPontos){
+        
+    //}
+
+    //private boolean verificarVitoriaDiagonalEsquerda(int coluna, char cor, int contadorPontos){
+        
+    //}
 
     public boolean verificacaoEmpate(){
         boolean empate = (quantPecasPosicionadas == 42); 
