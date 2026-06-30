@@ -148,7 +148,26 @@ public class Tabuleiro {
     }
 
     private boolean verificarVitoriaDiagonalEsquerda(int coluna, char cor, int contadorPontos){
-        
+       int linhaInicial = linhaVazia, colunaInicial = coluna, contPecasDiagEsq = 0;
+
+        while(linhaInicial < 5 && colunaInicial < 6 && contPecasDiagEsq < 3){
+            colunaInicial ++;
+            linhaInicial ++;
+            contPecasDiagEsq ++;
+        }
+
+        for(int linha=linhaInicial; linha >= 0 && colunaInicial>0; linha--){
+            if(tabuleiro[linha][colunaInicial] == cor){
+                contadorPontos ++;
+            }else{  
+                contadorPontos = 0;
+            }
+            if(contadorPontos == 4){
+                return true;
+            }
+            colunaInicial --;
+        }
+        return false;         
     }
 
     public boolean verificacaoEmpate(){
