@@ -142,7 +142,7 @@ public class ExecucaoJogo {
         System.out.println();//espaço para ficar mais limpo o terminal
         int num;
         System.out.println("O jogador que começa jogando é:");
-        num = (int)(Math.random()*2); //se for igual ou maior que 0,50 vai ser 1.
+        num = (int)(Math.random()*2); 
         if(num == 0){
             System.out.println("Usuário");
         }else{
@@ -172,9 +172,10 @@ public class ExecucaoJogo {
                         meuTabuleiro.posicionarPecaNoTabuleiro(usuario.obterCor());
                     }else{
                         System.out.println("Coluna sem espaços vazio. Tente escolher outra!");
+                        continue;
                     }
                 }else{
-                    System.out.println("Coluna incorreta. Tente novamente!");
+                    System.out.println("A coluna não existe. Tente novamente!");
                     continue;
                 }
                 if(verificarSeAcabouJogo()){
