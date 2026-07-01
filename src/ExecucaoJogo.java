@@ -49,6 +49,7 @@ public class ExecucaoJogo {
                 break;
 
             case 4:
+                new Tabuleiro();
                 escolherCoresDasPecas();
                 sortearJogadorQueComeca();
                 iniciarPartida();
@@ -261,11 +262,13 @@ public class ExecucaoJogo {
     }
 
     private void reiniciarJogo(){
-        new ExecucaoJogo();
+        new Tabuleiro();
+        escolherCoresDasPecas();
+        sortearJogadorQueComeca();
+        iniciarPartida();    
     }
 
     public static void main(String[] args){
         new ExecucaoJogo();
-    
     }
 }

@@ -3,10 +3,10 @@ public class Tabuleiro {
     private int linhaVazia, colunaVazia, quantPecasPosicionadas = 0;
     
     public Tabuleiro(){
-        criarTabuleiro();
+        zerarTabuleiro();
     }
 
-    private void criarTabuleiro(){
+    private void zerarTabuleiro(){
         for(int linha=0; linha<6; linha++){
             for(int coluna=0; coluna<7; coluna++){
                 tabuleiro[linha][coluna] = 'B';
