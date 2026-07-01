@@ -15,14 +15,14 @@ public class Tabuleiro {
     }
 
     public void mostrarTabuleiro(){
-        int numColuna = -1;
+        int numColuna = 0;
         for(int linha=-1; linha<6; linha++){
             for(int coluna=0; coluna<7; coluna++){
                 if(linha != -1){
                     System.out.printf(tabuleiro[linha][coluna] + " ");    
                 }else{
-                    numColuna ++;
                     System.out.printf(numColuna + " ");
+                    numColuna ++;
                 }
             }
             System.out.println();
@@ -53,28 +53,29 @@ public class Tabuleiro {
         tabuleiro[linhaVazia][colunaVazia] = corPosicionar;
     }
 
-    public String verificacaoVitoria(int coluna, boolean jogadorUsuario){
+    public String verificarVitoria(int coluna, boolean jogadorAtual){
         String vencedor = "null";
-        boolean vertical = false, vitoria = false;
+        boolean vertical = false, vitoria;
         char corJogador = tabuleiro[linhaVazia][coluna];
-        int contadorPontos = 0;
 
         if(linhaVazia <= 2){
-            vertical = verificarVitoriaVertical(coluna, corJogador, contadorPontos);
+            vertical = verificarVitoriaVertical(coluna, corJogador);
         }
 
         if(vertical){
             vitoria = true;
-        }else if(verificarVitoriaHorizontal(coluna, corJogador, contadorPontos)){
+        }else if(verificarVitoriaHorizontal(coluna, corJogador)){
             vitoria = true;
-        }else if(verificarVitoriaDiagonalDireta(coluna, corJogador, contadorPontos)){
+        }else if(verificarVitoriaDiagonalDireta(coluna, corJogador)){
             vitoria = true;
-        }else if(verificarVitoriaDiagonalEsquerda(coluna, corJogador, contadorPontos)){
+        }else if(verificarVitoriaDiagonalEsquerda(coluna, corJogador)){
             vitoria = true;
+        }else{
+            vitoria = false;
         }
 
         if(vitoria){
-            if(jogadorUsuario){
+            if(jogadorAtual){
                 vencedor = "Usuário";
             }else{
                 vencedor = "Computador";
@@ -83,8 +84,10 @@ public class Tabuleiro {
         return vencedor;
     }
 
-    private boolean verificarVitoriaVertical(int coluna, char cor, int contadorPontos){
-        for(int linha = linhaVazia; linha < 6; linha ++){
+    private boolean verificarVitoriaVertical(int coluna, char cor){
+        int contadorPontos = 1;
+
+        for(int linha = linhaVazia+1; linha < 6; linha ++){
             if(tabuleiro[linha][coluna] == cor){
                 contadorPontos ++;
             }else{//peça de baixo pertence ao adversário
@@ -99,7 +102,8 @@ public class Tabuleiro {
         return false;
     }
 
-    private boolean verificarVitoriaHorizontal(int coluna, char cor, int contadorPontos){
+    private boolean verificarVitoriaHorizontal(int coluna, char cor){
+        int contadorPontos = 0;
         int posicoes = 0; //quantidade de posições que devem ser subtraídas.
         if(coluna >= 3){
             posicoes = 3;
@@ -123,8 +127,11 @@ public class Tabuleiro {
         return false;
     }
 
-    private boolean verificarVitoriaDiagonalDireta(int coluna, char cor, int contadorPontos){
-       int linhaInicial = linhaVazia, colunaInicial = coluna, contPecasParaTras = 0;
+    private boolean verificarVitoriaDiagonalDireta(int coluna, char cor){
+        int contadorPontos = 0;
+        int linhaInicial = linhaVazia;
+        int colunaInicial = coluna;
+        int contPecasParaTras = 0;
 
         //linha e coluna do ponto mais baixo possível para fazer uma diagonal com a peça selecionada por último.
         while(linhaInicial < 5 && colunaInicial > 0 && contPecasParaTras < 3){
@@ -147,8 +154,11 @@ public class Tabuleiro {
         return false;
     }
 
-    private boolean verificarVitoriaDiagonalEsquerda(int coluna, char cor, int contadorPontos){
-       int linhaInicial = linhaVazia, colunaInicial = coluna, contPecasDiagEsq = 0;
+    private boolean verificarVitoriaDiagonalEsquerda(int coluna, char cor){
+        int contadorPontos = 0;
+       int linhaInicial = linhaVazia;
+       int colunaInicial = coluna;
+       int contPecasDiagEsq = 0;
 
         while(linhaInicial < 5 && colunaInicial < 6 && contPecasDiagEsq < 3){
             colunaInicial ++;

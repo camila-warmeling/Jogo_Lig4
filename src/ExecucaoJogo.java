@@ -206,7 +206,7 @@ public class ExecucaoJogo {
 
     private boolean verificarSeAcabouJogo(){
         boolean jogoAcabou = true;
-        vencedor = meuTabuleiro.verificacaoVitoria(colunaEscolhida, vezDoUsuario);
+        vencedor = meuTabuleiro.verificarVitoria(colunaEscolhida, vezDoUsuario);
         if(!vencedor.equals("null")){ //! no começo da sentença para negação
             fimDeJogoVitoria();
         }else if(meuTabuleiro.verificacaoEmpate()){
