@@ -1,19 +1,16 @@
-## Getting Started
+## Jogo Lig4
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Projeto realizado para o trabalho final da disciplina de Introdução a Progração do 1° Semestre de Ciência da Computação.
+Realizado na linguagem de programação Java, sendo possível joga-lo no terminal da IDE.
 
-## Folder Structure
+## Execução do Jogo
+O usuário joga contra o computador em um tabuleiro de 6x7. Ao escolher uma coluna para jogar, a peça vai cair até no ponto mais baixo do tabuleiro. O primeiro a fazer uma sequência de 4 peças ganha o jogo.
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
-# TrabalhoFinal_Liga4
+## Habulidades Técnicas
+Foi utilizado diferentes habilidades para a execução do projeto, como:
+  estruturas condicionais
+  estruturas de repetição
+  tratamentos de erro - try catch
+  POO - programação orientada a objetos 
+  
+  
